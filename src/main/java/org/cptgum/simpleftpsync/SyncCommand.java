@@ -16,8 +16,19 @@ public class SyncCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length == 1 && args[0].equalsIgnoreCase("reload")) {
             if (sender.hasPermission("syncfolder.reload")) {
-                plugin.reloadConfig();
+                plugin.reloadPlugin();
                 sender.sendMessage(ChatColor.GREEN + "Config reloaded.");
+            } else {
+                sender.sendMessage(ChatColor.RED + "You do not have permission for this command.");
+            }
+
+            return true;
+        }
+
+        if (args.length == 1 && args[0].equalsIgnoreCase("run")) {
+            if (sender.hasPermission("syncfolder.run")) {
+                plugin.runSyncNow();
+                sender.sendMessage(ChatColor.GREEN + "Manual sync started.");
             } else {
                 sender.sendMessage(ChatColor.RED + "You do not have permission for this command.");
             }

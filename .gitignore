@@ -1,0 +1,15 @@
+.tools/
+.repo_backup_current/
+build/
+extracted/
+partial-build/
+recovered/
+
+*.class
+*.jar
+*.log
+
+.idea/
+.vscode/
+out/
+target/

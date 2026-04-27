@@ -9,15 +9,30 @@ import java.io.File;
 import java.io.IOException;
 
 public class SFTPUtil {
+    private SFTPUtil() {
+    }
+
     public static void uploadPath(String host, int port, String user, String pass, String remotePath, String localPath)
             throws IOException, SftpException, JSchException {
+        uploadPath(host, port, user, pass, remotePath, localPath, null, false);
+    }
+
+    public static void uploadPath(
+            String host,
+            int port,
+            String user,
+            String pass,
+            String remotePath,
+            String localPath,
+            String knownHostsPath,
+            boolean strictHostKeyChecking) throws IOException, SftpException, JSchException {
         JSch jsch = new JSch();
         Session session = jsch.getSession(user, host, port);
         ChannelSftp channelSftp = null;
 
         try {
             session.setPassword(pass);
-            session.setConfig("StrictHostKeyChecking", "no");
+            configureHostKeyChecking(jsch, session, knownHostsPath, strictHostKeyChecking);
             session.connect();
 
             channelSftp = (ChannelSftp) session.openChannel("sftp");
@@ -36,6 +51,29 @@ public class SFTPUtil {
     public static void uploadFile(String host, int port, String user, String pass, String remotePath, String localPath)
             throws IOException, SftpException, JSchException {
         uploadPath(host, port, user, pass, remotePath, localPath);
+    }
+
+    private static void configureHostKeyChecking(
+            JSch jsch,
+            Session session,
+            String knownHostsPath,
+            boolean strictHostKeyChecking) throws IOException, JSchException {
+        if (!strictHostKeyChecking) {
+            session.setConfig("StrictHostKeyChecking", "no");
+            return;
+        }
+
+        if (knownHostsPath == null || knownHostsPath.trim().isEmpty()) {
+            throw new IOException("SFTP strict host key checking is enabled, but no known-hosts file is configured.");
+        }
+
+        File knownHostsFile = new File(knownHostsPath);
+        if (!knownHostsFile.exists()) {
+            throw new IOException("SFTP known-hosts file does not exist: " + knownHostsFile.getPath());
+        }
+
+        jsch.setKnownHosts(knownHostsFile.getAbsolutePath());
+        session.setConfig("StrictHostKeyChecking", "yes");
     }
 
     private static void uploadPath(ChannelSftp channelSftp, File localPath, String remotePath)

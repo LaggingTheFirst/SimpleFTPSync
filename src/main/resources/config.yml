@@ -1,8 +1,10 @@
 # Config file for SimpleFTPSync
 
-sync-interval: 300  # Synchronizations interval in seconds
-local-path: "path/to/local/folder" # Path to local folder
-sync-type: "FTP" # Synchronization type (FTP SFTP or FTPS)
+sync-interval: 300 # Synchronization interval in seconds
+sync-type: "FTP" # FTP, FTPS, or SFTP
+sync-on-startup: true
+sync-only-changed: true
+change-detection: "CHECKSUM" # CHECKSUM or METADATA
 
 # Optional legacy single-path fallback.
 # If sync-folders is empty, the plugin will use local-path plus the selected
@@ -24,6 +26,8 @@ sftp:
   username: "your-sftp-username"
   password: "your-sftp-password"
   remote-path: "/path/on/sftp/server"
+  strict-host-key-checking: true
+  known-hosts-file: "plugins/SimpleFTPSync/known_hosts"
 
 # FTPS server configuration
 ftps:
@@ -33,10 +37,15 @@ ftps:
   password: "your-ftps-password"
   remote-path: "/path/on/ftps/server"
 
-# List of folders to synchronize
+# List of files or folders to synchronize.
+# This list is the preferred format and supports recursive directory uploads.
 sync-folders:
   - local-path: "plugins/YourPluginName/folder1"
     remote-path: "/remote/folder1"
+    changed-only: true
+    exclude:
+      - "**/*.tmp"
+      - "**/session.lock"
   - local-path: "world"
-    remote-path: "/remote/folder2"
-    # Add more folders as needed
+    remote-path: "/remote/world"
+    changed-only: true
