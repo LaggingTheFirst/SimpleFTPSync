@@ -1,0 +1,42 @@
+# Config file for SimpleFTPSync
+
+sync-interval: 300  # Synchronizations interval in seconds
+local-path: "path/to/local/folder" # Path to local folder
+sync-type: "FTP" # Synchronization type (FTP SFTP or FTPS)
+
+# Optional legacy single-path fallback.
+# If sync-folders is empty, the plugin will use local-path plus the selected
+# protocol's remote-path value.
+local-path: "path/to/local/folder"
+
+# FTP server configuration
+ftp:
+  server: "ftp.example.com"
+  port: 21
+  username: "your-ftp-username"
+  password: "your-ftp-password"
+  remote-path: "/path/on/ftp/server"
+
+# SFTP server configuration
+sftp:
+  server: "sftp.example.com"
+  port: 22
+  username: "your-sftp-username"
+  password: "your-sftp-password"
+  remote-path: "/path/on/sftp/server"
+
+# FTPS server configuration
+ftps:
+  server: "ftps.example.com"
+  port: 21
+  username: "your-ftps-username"
+  password: "your-ftps-password"
+  remote-path: "/path/on/ftps/server"
+
+# List of folders to synchronize
+sync-folders:
+  - local-path: "plugins/YourPluginName/folder1"
+    remote-path: "/remote/folder1"
+  - local-path: "world"
+    remote-path: "/remote/folder2"
+    # Add more folders as needed

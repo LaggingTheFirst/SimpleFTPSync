@@ -1,0 +1,12 @@
+name: SimpleFTPSync
+version: '1.1'
+main: org.cptgum.simpleftpsync.SimpleFTPSync
+api-version: '1.20'
+author: CptGummiball
+description: A plugin for folder synchronization with FTP or SFTP.
+
+commands:
+  sfs:
+    description: Main Command
+    usage: /sfs reload
+    permission: syncfolder.reload
