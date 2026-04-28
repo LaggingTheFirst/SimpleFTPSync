@@ -7,7 +7,6 @@ $extractedDir = Join-Path $projectRoot "extracted"
 $buildDir = Join-Path $projectRoot "build"
 $classesDir = Join-Path $buildDir "classes"
 $stageDir = Join-Path $buildDir "stage"
-$outputJar = Join-Path $buildDir "SimpleFTPSync-1.1-recovered.jar"
 $javac = "C:\Program Files\Eclipse Adoptium\jdk-17.0.17.10-hotspot\bin\javac.exe"
 $jarTool = "C:\Program Files\Eclipse Adoptium\jdk-17.0.17.10-hotspot\bin\jar.exe"
 
@@ -32,6 +31,7 @@ New-Item -ItemType Directory -Force $classesDir | Out-Null
 New-Item -ItemType Directory -Force $stageDir | Out-Null
 
 $pomVersion = ([xml](Get-Content (Join-Path $projectRoot "pom.xml"))).project.version
+$outputJar = Join-Path $buildDir ("SimpleFTPSync-{0}.jar" -f $pomVersion)
 $classpath = "$spigotJar;$originalJar"
 $sources = Get-ChildItem (Join-Path $projectRoot "src\main\java") -Recurse -Filter "*.java" | ForEach-Object { $_.FullName }
 

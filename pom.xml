@@ -6,7 +6,7 @@
 
     <groupId>org.cptgum</groupId>
     <artifactId>SimpleFTPSync</artifactId>
-    <version>1.2.0-SNAPSHOT</version>
+    <version>1.2.0</version>
     <packaging>jar</packaging>
 
     <name>SimpleFTPSync</name>

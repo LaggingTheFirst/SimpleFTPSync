@@ -4,6 +4,8 @@
 
 SimpleFTPSync is a community continuation of the original plugin for synchronizing local files or folders to remote FTP, FTPS, or SFTP servers.
 
+Current public revival release: `1.2.0`
+
 ## Current state
 
 This project was reconstructed from the released `SimpleFTPSync-1.1.jar` after the original repository disappeared.
@@ -96,7 +98,7 @@ mvn package
 This workspace also includes [build.ps1](C:\Users\temit\Desktop\SimpleFTPSync-1.1\build.ps1), which builds a fresh shaded jar without Maven by:
 - compiling the recovered source against the locally cached Spigot API jar
 - reusing the bundled FTP/SFTP libraries from the original `SimpleFTPSync-1.1.jar`
-- packaging the result as `build/SimpleFTPSync-1.1-recovered.jar`
+- packaging the result as `build/SimpleFTPSync-1.2.0.jar`
 
 Run it with:
 
