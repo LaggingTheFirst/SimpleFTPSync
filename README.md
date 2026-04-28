@@ -1,5 +1,7 @@
 # SimpleFTPSync
 
+[![Build](https://github.com/LaggingTheFirst/SimpleFTPSync/actions/workflows/build.yml/badge.svg)](https://github.com/LaggingTheFirst/SimpleFTPSync/actions/workflows/build.yml)
+
 SimpleFTPSync is a community continuation of the original plugin for synchronizing local files or folders to remote FTP, FTPS, or SFTP servers.
 
 ## Current state
@@ -105,3 +107,9 @@ Run it with:
 ## Publishing note
 
 This repository starts with a recovered `1.1` snapshot commit and then continues with maintenance and feature work on top of that recovered base.
+
+## Project links
+
+- Changelog: [CHANGELOG.md](C:\Users\temit\Desktop\SimpleFTPSync-1.1\CHANGELOG.md)
+- Contributing: [CONTRIBUTING.md](C:\Users\temit\Desktop\SimpleFTPSync-1.1\CONTRIBUTING.md)
+- Release checklist: [RELEASING.md](C:\Users\temit\Desktop\SimpleFTPSync-1.1\RELEASING.md)
