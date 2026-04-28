@@ -131,12 +131,22 @@ public class SyncTask extends BukkitRunnable {
     private List<SyncEntry> loadSyncEntries(SyncType syncType) {
         List<SyncEntry> syncEntries = new ArrayList<SyncEntry>();
         FileConfiguration config = plugin.getPluginConfig();
+        String protocolRemotePath = config.getString(syncType.getConfigKey() + ".remote-path");
 
         for (Map<?, ?> entry : config.getMapList("sync-folders")) {
             String localPath = asString(entry.get("local-path"));
             String remotePath = asString(entry.get("remote-path"));
+            String remoteSubpath = asString(entry.get("remote-subpath"));
             boolean changedOnly = getChangedOnly(entry.get("changed-only"), config.getBoolean("sync-only-changed", true));
-            addSyncEntry(syncEntries, localPath, remotePath, getStringList(entry.get("include")), getStringList(entry.get("exclude")), changedOnly);
+            addSyncEntry(
+                    syncEntries,
+                    localPath,
+                    protocolRemotePath,
+                    remotePath,
+                    remoteSubpath,
+                    getStringList(entry.get("include")),
+                    getStringList(entry.get("exclude")),
+                    changedOnly);
         }
 
         ConfigurationSection syncFolderSection = config.getConfigurationSection("sync-folders");
@@ -144,11 +154,14 @@ public class SyncTask extends BukkitRunnable {
             for (String key : syncFolderSection.getKeys(false)) {
                 String localPath = syncFolderSection.getString(key + ".local-path");
                 String remotePath = syncFolderSection.getString(key + ".remote-path");
+                String remoteSubpath = syncFolderSection.getString(key + ".remote-subpath");
                 boolean changedOnly = syncFolderSection.getBoolean(key + ".changed-only", config.getBoolean("sync-only-changed", true));
                 addSyncEntry(
                         syncEntries,
                         localPath,
+                        protocolRemotePath,
                         remotePath,
+                        remoteSubpath,
                         syncFolderSection.getStringList(key + ".include"),
                         syncFolderSection.getStringList(key + ".exclude"),
                         changedOnly);
@@ -157,8 +170,14 @@ public class SyncTask extends BukkitRunnable {
 
         if (syncEntries.isEmpty()) {
             String localPath = config.getString("local-path");
-            String remotePath = config.getString(syncType.getConfigKey() + ".remote-path");
-            addSyncEntry(syncEntries, localPath, remotePath, Collections.<String>emptyList(), Collections.<String>emptyList(),
+            addSyncEntry(
+                    syncEntries,
+                    localPath,
+                    null,
+                    protocolRemotePath,
+                    null,
+                    Collections.<String>emptyList(),
+                    Collections.<String>emptyList(),
                     config.getBoolean("sync-only-changed", true));
         }
 
@@ -178,11 +197,14 @@ public class SyncTask extends BukkitRunnable {
     private void addSyncEntry(
             List<SyncEntry> syncEntries,
             String localPathValue,
+            String protocolRemotePathValue,
             String remotePathValue,
+            String remoteSubpathValue,
             List<String> includes,
             List<String> excludes,
             boolean changedOnly) {
-        if (isBlank(localPathValue) || isBlank(remotePathValue)) {
+        String resolvedRemotePath = resolveEntryRemotePath(protocolRemotePathValue, remotePathValue, remoteSubpathValue);
+        if (isBlank(localPathValue) || isBlank(resolvedRemotePath)) {
             return;
         }
 
@@ -192,7 +214,33 @@ public class SyncTask extends BukkitRunnable {
             return;
         }
 
-        syncEntries.add(new SyncEntry(localPath, normalizeRemotePath(remotePathValue), includes, excludes, changedOnly));
+        syncEntries.add(new SyncEntry(localPath, normalizeRemotePath(resolvedRemotePath), includes, excludes, changedOnly));
+    }
+
+    private String resolveEntryRemotePath(String protocolRemotePathValue, String remotePathValue, String remoteSubpathValue) {
+        if (!isBlank(remoteSubpathValue)) {
+            String normalizedSubpath = normalizeRemotePath(remoteSubpathValue.trim());
+            if (!isRelativeRemotePath(normalizedSubpath)) {
+                return normalizedSubpath;
+            }
+            if (isBlank(protocolRemotePathValue)) {
+                plugin.getLogger().warning(
+                        "Skipping sync entry because remote-subpath requires the selected protocol remote-path to be configured.");
+                return null;
+            }
+            return appendRemotePath(protocolRemotePathValue, normalizedSubpath);
+        }
+
+        if (isBlank(remotePathValue)) {
+            return null;
+        }
+
+        String normalizedRemotePath = normalizeRemotePath(remotePathValue.trim());
+        if (isRelativeRemotePath(normalizedRemotePath) && !isBlank(protocolRemotePathValue)) {
+            return appendRemotePath(protocolRemotePathValue, normalizedRemotePath);
+        }
+
+        return normalizedRemotePath;
     }
 
     private List<SyncFile> collectSyncFiles(SyncEntry syncEntry) {
@@ -249,6 +297,15 @@ public class SyncTask extends BukkitRunnable {
 
     private String normalizeRemotePath(String remotePath) {
         return remotePath.replace('\\', '/');
+    }
+
+    private boolean isRelativeRemotePath(String remotePath) {
+        String normalizedRemotePath = normalizeRemotePath(remotePath);
+        if (normalizedRemotePath.startsWith("/")) {
+            return false;
+        }
+
+        return !normalizedRemotePath.matches("^[A-Za-z]:/.*");
     }
 
     private String asString(Object value) {

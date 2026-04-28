@@ -11,6 +11,8 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - Made the default config inactive until real sync settings are entered.
 - Added sync target preflight validation to avoid placeholder-host error spam on fresh installs.
+- Added easier relative `sync-folders[].remote-path` support so entries can live under the selected protocol base `remote-path`.
+- Added a dedicated Windows SFTP setup guide for the simpler `C:\MinecraftSync` layout.
 
 ## [1.2.0] - 2026-04-28
 

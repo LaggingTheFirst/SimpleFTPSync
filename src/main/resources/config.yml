@@ -1,7 +1,7 @@
 # Config file for SimpleFTPSync
 
 sync-interval: 300 # Synchronization interval in seconds
-sync-type: "FTP" # FTP, FTPS, or SFTP
+sync-type: "SFTP" # FTP, FTPS, or SFTP
 sync-on-startup: false
 sync-only-changed: true
 change-detection: "CHECKSUM" # CHECKSUM or METADATA
@@ -39,17 +39,20 @@ ftps:
 
 # List of files or folders to synchronize.
 # This list is the preferred format and supports recursive directory uploads.
+# Each entry remote-path may be:
+# - relative to the selected protocol remote-path, like "world"
+# - fully absolute, like "/C:/MinecraftSync/world" or "/backups/world"
 # Leave it empty until you are ready to configure a real sync target.
 sync-folders: []
 
 # Example:
 # sync-folders:
 #   - local-path: "world"
-#     remote-path: "/remote/world"
+#     remote-path: "world"
 #     changed-only: true
 #     exclude:
 #       - "**/session.lock"
 #   - local-path: "plugins/ExamplePlugin/data"
-#     remote-path: "/remote/example-plugin"
+#     remote-path: "example-plugin"
 #     include:
 #       - "**/*.yml"

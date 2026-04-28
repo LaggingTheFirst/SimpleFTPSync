@@ -34,8 +34,8 @@ The recovered source has already been cleaned up to:
 3. Stop the server and open `plugins/SimpleFTPSync/config.yml`.
 4. Notice that the default config is intentionally inactive until you fill it in.
 5. Set `sync-type` to `FTP`, `FTPS`, or `SFTP`.
-6. Fill in the matching server section with your host, port, username, password, and default `remote-path`.
-7. Add one or more entries under `sync-folders` for the files or folders you want to upload.
+6. Fill in the matching server section with your host, port, username, password, and base `remote-path`.
+7. Add one or more entries under `sync-folders` for the files or folders you want to upload. Entry `remote-path` values may be relative to the selected protocol base path, which is usually the easiest setup.
 8. Set `sync-interval` to the number of seconds between sync runs.
 9. Leave `sync-only-changed: true` unless you intentionally want to re-upload everything every cycle.
 10. Start the server again.
@@ -63,19 +63,24 @@ sync-on-startup: false
 sync-only-changed: true
 change-detection: "CHECKSUM"
 
+sftp:
+  remote-path: "/backups"
+
 sync-folders:
   - local-path: "world"
-    remote-path: "/backups/world"
+    remote-path: "world"
     changed-only: true
     exclude:
       - "**/session.lock"
   - local-path: "plugins/ExamplePlugin/data"
-    remote-path: "/backups/example-plugin"
+    remote-path: "example-plugin"
     include:
       - "**/*.yml"
 ```
 
 `local-path` plus the selected protocol's `remote-path` is still supported as a legacy single-entry fallback.
+
+If you prefer, `sync-folders[].remote-path` can still be a fully absolute remote destination.
 
 ## Build
 
@@ -117,3 +122,4 @@ This repository starts with a recovered `1.1` snapshot commit and then continues
 - Changelog: [CHANGELOG.md](C:\Users\temit\Desktop\SimpleFTPSync-1.1\CHANGELOG.md)
 - Contributing: [CONTRIBUTING.md](C:\Users\temit\Desktop\SimpleFTPSync-1.1\CONTRIBUTING.md)
 - Release checklist: [RELEASING.md](C:\Users\temit\Desktop\SimpleFTPSync-1.1\RELEASING.md)
+- Windows SFTP setup: [WINDOWS_SFTP_SETUP.md](C:\Users\temit\Desktop\SimpleFTPSync-1.1\WINDOWS_SFTP_SETUP.md)
