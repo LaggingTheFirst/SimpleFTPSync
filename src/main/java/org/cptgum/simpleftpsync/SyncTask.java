@@ -33,6 +33,13 @@ public class SyncTask extends BukkitRunnable {
                 return;
             }
 
+            if (!hasConfiguredTarget(syncType)) {
+                plugin.getLogger().warning(
+                        "Sync target for " + syncType.name()
+                                + " is not configured yet. Set a real server host and at least one sync entry in config.yml.");
+                return;
+            }
+
             ChangeDetectionMode changeDetectionMode =
                     ChangeDetectionMode.fromConfig(plugin.getPluginConfig().getString("change-detection"));
 
@@ -156,6 +163,16 @@ public class SyncTask extends BukkitRunnable {
         }
 
         return syncEntries;
+    }
+
+    private boolean hasConfiguredTarget(SyncType syncType) {
+        String server = plugin.getPluginConfig().getString(syncType.getConfigKey() + ".server");
+        if (isBlank(server)) {
+            return false;
+        }
+
+        String normalizedServer = server.trim().toLowerCase();
+        return !normalizedServer.contains("example.com");
     }
 
     private void addSyncEntry(

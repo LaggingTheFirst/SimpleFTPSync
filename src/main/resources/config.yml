@@ -2,50 +2,54 @@
 
 sync-interval: 300 # Synchronization interval in seconds
 sync-type: "FTP" # FTP, FTPS, or SFTP
-sync-on-startup: true
+sync-on-startup: false
 sync-only-changed: true
 change-detection: "CHECKSUM" # CHECKSUM or METADATA
 
 # Optional legacy single-path fallback.
 # If sync-folders is empty, the plugin will use local-path plus the selected
 # protocol's remote-path value.
-local-path: "path/to/local/folder"
+local-path: ""
 
 # FTP server configuration
 ftp:
-  server: "ftp.example.com"
+  server: ""
   port: 21
-  username: "your-ftp-username"
-  password: "your-ftp-password"
-  remote-path: "/path/on/ftp/server"
+  username: ""
+  password: ""
+  remote-path: ""
 
 # SFTP server configuration
 sftp:
-  server: "sftp.example.com"
+  server: ""
   port: 22
-  username: "your-sftp-username"
-  password: "your-sftp-password"
-  remote-path: "/path/on/sftp/server"
+  username: ""
+  password: ""
+  remote-path: ""
   strict-host-key-checking: true
   known-hosts-file: "plugins/SimpleFTPSync/known_hosts"
 
 # FTPS server configuration
 ftps:
-  server: "ftps.example.com"
+  server: ""
   port: 21
-  username: "your-ftps-username"
-  password: "your-ftps-password"
-  remote-path: "/path/on/ftps/server"
+  username: ""
+  password: ""
+  remote-path: ""
 
 # List of files or folders to synchronize.
 # This list is the preferred format and supports recursive directory uploads.
-sync-folders:
-  - local-path: "plugins/YourPluginName/folder1"
-    remote-path: "/remote/folder1"
-    changed-only: true
-    exclude:
-      - "**/*.tmp"
-      - "**/session.lock"
-  - local-path: "world"
-    remote-path: "/remote/world"
-    changed-only: true
+# Leave it empty until you are ready to configure a real sync target.
+sync-folders: []
+
+# Example:
+# sync-folders:
+#   - local-path: "world"
+#     remote-path: "/remote/world"
+#     changed-only: true
+#     exclude:
+#       - "**/session.lock"
+#   - local-path: "plugins/ExamplePlugin/data"
+#     remote-path: "/remote/example-plugin"
+#     include:
+#       - "**/*.yml"

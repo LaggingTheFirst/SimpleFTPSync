@@ -32,7 +32,7 @@ public final class SimpleFTPSync extends JavaPlugin {
     }
 
     public void runSyncNow() {
-        getServer().getScheduler().runTaskAsynchronously(this, new SyncTask(this));
+        new SyncTask(this).runTaskAsynchronously(this);
     }
 
     public boolean beginSyncRun() {

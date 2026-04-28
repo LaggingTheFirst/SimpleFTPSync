@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Fixed
+- Updated `/sfs run` to use the Paper-compatible async scheduling path on modern servers.
+- Fixed `**/session.lock` excludes so they also match a root-level `session.lock`.
+
+### Changed
+- Made the default config inactive until real sync settings are entered.
+- Added sync target preflight validation to avoid placeholder-host error spam on fresh installs.
+
 ## [1.2.0] - 2026-04-28
 
 ### Added

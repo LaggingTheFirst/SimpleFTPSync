@@ -82,8 +82,14 @@ public class SyncEntry {
             if (current == '*') {
                 boolean doubleStar = i + 1 < glob.length() && glob.charAt(i + 1) == '*';
                 if (doubleStar) {
-                    regex.append(".*");
-                    i++;
+                    boolean followedBySlash = i + 2 < glob.length() && glob.charAt(i + 2) == '/';
+                    if (followedBySlash) {
+                        regex.append("(?:.*/)?");
+                        i += 2;
+                    } else {
+                        regex.append(".*");
+                        i++;
+                    }
                 } else {
                     regex.append("[^/]*");
                 }

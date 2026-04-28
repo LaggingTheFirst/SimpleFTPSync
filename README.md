@@ -32,14 +32,15 @@ The recovered source has already been cleaned up to:
 1. Build or take the ready-made plugin jar and place it in your server's `plugins` folder.
 2. Start the server once so SimpleFTPSync creates its config folder.
 3. Stop the server and open `plugins/SimpleFTPSync/config.yml`.
-4. Set `sync-type` to `FTP`, `FTPS`, or `SFTP`.
-5. Fill in the matching server section with your host, port, username, password, and default `remote-path`.
-6. Add one or more entries under `sync-folders` for the files or folders you want to upload.
-7. Set `sync-interval` to the number of seconds between sync runs.
-8. Leave `sync-only-changed: true` unless you intentionally want to re-upload everything every cycle.
-9. Start the server again.
-10. Run `/sfs run` in game or in the console to test immediately.
-11. If you change the config later, run `/sfs reload` to apply it without restarting the server.
+4. Notice that the default config is intentionally inactive until you fill it in.
+5. Set `sync-type` to `FTP`, `FTPS`, or `SFTP`.
+6. Fill in the matching server section with your host, port, username, password, and default `remote-path`.
+7. Add one or more entries under `sync-folders` for the files or folders you want to upload.
+8. Set `sync-interval` to the number of seconds between sync runs.
+9. Leave `sync-only-changed: true` unless you intentionally want to re-upload everything every cycle.
+10. Start the server again.
+11. Run `/sfs run` in game or in the console to test immediately.
+12. If you change the config later, run `/sfs reload` to apply it without restarting the server.
 
 ## SFTP host keys
 
@@ -58,6 +59,7 @@ Use `src/main/resources/config.yml` as the template. The preferred structure is:
 ```yml
 sync-interval: 300
 sync-type: "SFTP"
+sync-on-startup: false
 sync-only-changed: true
 change-detection: "CHECKSUM"
 
