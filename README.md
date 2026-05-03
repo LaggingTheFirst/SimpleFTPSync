@@ -117,6 +117,9 @@ Run it with:
 
 This repository starts with a recovered `1.1` snapshot commit and then continues with maintenance and feature work on top of that recovered base.
 
+Original public listing:
+- [SpigotMC resource page](https://www.spigotmc.org/resources/simpleftpsync.114317)
+
 ## Project links
 
 - Changelog: [CHANGELOG.md](C:\Users\temit\Desktop\SimpleFTPSync-1.1\CHANGELOG.md)
